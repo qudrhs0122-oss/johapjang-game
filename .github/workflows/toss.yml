@@ -4,6 +4,8 @@ on:
   push:
     branches: [main, master]
     paths: ['index.html', 'img/**', 'toss/**', '.github/workflows/toss.yml']
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +22,14 @@ jobs:
           name: johapjang-ait
           path: toss/*.ait
           if-no-files-found: error
+      - name: 다운로드 링크(릴리스) 갱신
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: toss-latest
+          name: 토스 미니앱 번들 (최신)
+          body: 앱인토스 콘솔 > 앱 출시 에 올릴 johapjang.ait 파일입니다. 빌드 커밋 ${{ github.sha }}
+          files: toss/johapjang.ait
+          make_latest: true
       - name: 앱인토스 콘솔에 업로드 (AIT_API_KEY 시크릿이 있을 때만)
         if: ${{ env.AIT_API_KEY != '' }}
         env: { AIT_API_KEY: '${{ secrets.AIT_API_KEY }}' }
