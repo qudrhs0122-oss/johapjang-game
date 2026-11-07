@@ -1,0 +1,28 @@
+name: 토스 미니앱 빌드
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths: ['index.html', 'img/**', 'toss/**', '.github/workflows/toss.yml']
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: toss } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install
+      - run: npm run build
+      - run: ls -la; ls -la dist | head
+      - uses: actions/upload-artifact@v4
+        with:
+          name: johapjang-ait
+          path: toss/*.ait
+          if-no-files-found: error
+      - name: 앱인토스 콘솔에 업로드 (AIT_API_KEY 시크릿이 있을 때만)
+        if: ${{ env.AIT_API_KEY != '' }}
+        env: { AIT_API_KEY: '${{ secrets.AIT_API_KEY }}' }
+        run: npx ait deploy --api-key "$AIT_API_KEY" -m "${{ github.sha }}"
+    env:
+      AIT_API_KEY: ${{ secrets.AIT_API_KEY }}
