@@ -23,11 +23,12 @@ jobs:
       - name: AAB(서명 전) 빌드
         working-directory: android
         env: { VERSION_CODE: '${{ github.run_number }}' }
-        run: gradle --no-daemon bundleRelease assembleRelease
+        run: gradle --no-daemon bundleRelease assembleRelease assembleDebug
       - run: |
           mkdir -p out
           cp android/app/build/outputs/bundle/release/app-release.aab out/johapjang-unsigned.aab
           cp android/app/build/outputs/apk/release/app-release-unsigned.apk out/johapjang-unsigned.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk out/johapjang-test.apk
           ls -la out
       - uses: softprops/action-gh-release@v2
         with:
@@ -37,3 +38,4 @@ jobs:
           files: |
             out/johapjang-unsigned.aab
             out/johapjang-unsigned.apk
+            out/johapjang-test.apk
