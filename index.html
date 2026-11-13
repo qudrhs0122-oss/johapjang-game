@@ -1922,4 +1922,12 @@ function toast(t){const d=document.createElement("div"); d.className="toast"; d.
 setInterval(liveTick,200);
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol==="https:"&&!/tossmini|apps-in-toss/.test(location.host)){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
+<script>
+/* aptgame.kr 계정 랭킹 연동 (aptgame.kr에서 실행될 때만 동작) */
+(function(){const _r=renderEnding;renderEnding=function(){_r();try{if(!window.APT||!S||S.rankSent)return;
+const e=econ(S),rise=(e.dues-S.dues0)/S.dues0*100,key=S.ending||"complete",done=!FAILS[key]&&key!=="resign";
+const sc=S.support*0.35+(100-S.legal_risk)*0.2+S.transparency*0.15+(100-S.stress)*0.1+(100-S.opposition)*0.1-Math.max(0,rise)*0.3+(done?15:-20)-S.revives*5;
+const g=(document.querySelector(".grade")||{}).textContent||"",t=(document.querySelectorAll("#app .card h2")[1]||{}).textContent||"";
+S.rankSent=1;save();APT.endCard("johapjang",Math.round(sc*10)/10,(g?g+"등급 ":"")+t,document.querySelector("#copy")||"#app");}catch(er){}};})();
+</script>
 </body></html>
